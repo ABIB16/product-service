@@ -9,9 +9,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.sound.midi.Soundbank;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 public class ProductServiceTest {
@@ -22,17 +24,18 @@ public class ProductServiceTest {
     @Mock
     ProductRepository productRepository;
 
-    /*@Test
-    void findByEmailNotFound(){
+    @Test
+    void findByNameNotFound(){
         Optional<Product> product= productService.findByName("Produit inconnu");
         assertEquals (false,product.isPresent());
     }
 
     @Test
-    void findByEmailFound(){
-        Optional<Product> product= productService.findByName("Produit 1");
-        assertEquals (true,product.isPresent());
-    }*/
+    void findByNameFound(){
+        Optional<Product> product= productService.findByName("Produit 3");
+        System.out.println("eeeeeeeeeeeeee "+product.get().getName());
+        assertEquals ("Produit 3",product.get().getName());
+    }
 
 
 
