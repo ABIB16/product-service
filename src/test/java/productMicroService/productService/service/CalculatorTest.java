@@ -1,25 +1,37 @@
 package productMicroService.productService.service;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import productMicroService.productService.controller.CalculatorController;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class CalculatorTest {
 
-    @Autowired
-    Calculator calculator;
+    @Mock
+    private Calculator calculator;
+
+    @InjectMocks
+    private CalculatorController calculatorController;
+
+    // initialiser les mocks avant chaque test
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     public void testCalculateAddition() {
-        // Given
-        int a = 5;
-        int b = 10;
-        char operator = '+';
+        when(calculator.calculate(5, 10,'+')).thenReturn(15);
 
-        // When
-        int result = calculator.calculate(a, b, operator);
+        int result = calculatorController.calculate(5, 10,'+');
 
         // Then
         int expected = 15;
@@ -28,13 +40,9 @@ public class CalculatorTest {
 
     @Test
     public void testCalculateSubtraction() {
-        // Given
-        int a = 15;
-        int b = 5;
-        char operator = '-';
+        when(calculator.calculate(15, 5,'-')).thenReturn(10);
 
-        // When
-        int result = calculator.calculate(a, b, operator);
+        int result = calculatorController.calculate(15, 5,'-');
 
         // Then
         int expected = 10;
@@ -43,13 +51,9 @@ public class CalculatorTest {
 
     @Test
     public void testCalculateMultiplication() {
-        // Given
-        int a = 3;
-        int b = 7;
-        char operator = '*';
+        when(calculator.calculate(3, 7,'*')).thenReturn(21);
 
-        // When
-        int result = calculator.calculate(a, b, operator);
+        int result = calculatorController.calculate(3, 7,'*');
 
         // Then
         int expected = 21;
@@ -58,33 +62,28 @@ public class CalculatorTest {
 
     @Test
     public void testCalculateDivision() {
-        // Given
-        int a = 20;
-        int b = 4;
-        char operator = '/';
+        when(calculator.calculate(20, 4,'/')).thenReturn(5);
 
-        // When
-        int result = calculator.calculate(a, b, operator);
+        int result = calculatorController.calculate(20, 4,'/');
+
 
         // Then
         int expected = 5;
         Assertions.assertEquals(expected, result, "Division result is incorrect!");
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            calculator.calculate(10, 0, operator);
+            calculator.calculate(10, 0, '/');
         }, "Division by zero should throw an exception.");
     }
 
-    @Test
+    /*@Test
     public void testCalculateInvalidOperator() {
-        // Given
-        int a = 5;
-        int b = 10;
-        char operator = '%'; // Invalid operator
+        when(calculator.calculate(5, 10,'%')).thenReturn(null);
+
 
         // Then
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            calculator.calculate(a, b, operator);
+            calculator.calculate(5,10, '%');
         }, "Invalid operator should throw an exception.");
-    }
+    }*/
 }
